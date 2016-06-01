@@ -3,19 +3,18 @@ $(document).ready(function () {
     function insertContent(movies) {
         var listing = $(".movie_listing");
         $.each(movies, function(index, movie) {
-            var tr = $("<tr>", {class: "movie"});
-            tr.attr("data-id", movie.id);
-            var title = $("<td>").text(movie.title);
-            var posterContainer = $("<td>");
+            var li = $("<li>", {class: "movie"});
+            li.attr("data-id", movie.id);
+            var title = $("<h3>").text(movie.title);
+            var posterContainer = $("<div>");
             var moviePoster = $("<img>").attr("src", movie.poster);
 
             posterContainer.append(moviePoster);
 
-            tr.append(title);
-            tr.append(posterContainer);
+            li.append(title);
+            li.append(posterContainer);
 
-            listing.append(tr);
-            // tr[0].setAttribute("data-id", movie.id);
+            listing.append(li);
         });
     }
 
@@ -30,7 +29,7 @@ $(document).ready(function () {
                                                // Ścieżka dostępu do pliku.
             timeout: 2000,                                          // Czas oczekiwania.
             beforeSend: function() {                                // Przed wykonaniem żądania Ajax.
-                container.append('<div id="load">Wczytywanie</div>');  // Wczytanie komunikatu.
+                container.append('<div id="load>Wczytywanie</div>');  // Wczytanie komunikatu.
             },
             complete: function() {                                  // Po wykonaniu żądania Ajax.
                 $('#load').remove();                             // Usunięcie komunikatu.
@@ -46,7 +45,7 @@ $(document).ready(function () {
                 console.log(data[0]);*/
         // content.html( $(data).find('#container') ).hide().fadeIn(400);
             },
-            fail: function() {                                      // Wyświetlenie komunikatu o błędzie.
+            error: function() {                                      // Wyświetlenie komunikatu o błędzie.
                 container.html('<div class="loading">Proszę spróbować wkrótce.</div>');
             }
         });
@@ -76,7 +75,7 @@ $(document).ready(function () {
                         rateMovie(url, currentElement);
                     }
                 },
-                fail: function() {                                      // Wyświetlenie komunikatu o błędzie.
+                error: function() {                                      // Wyświetlenie komunikatu o błędzie.
                     container.html("<div>Proszę spróbować wkrótce.</div>");
                 }
             });
@@ -178,7 +177,7 @@ $(document).ready(function () {
                     // function removeRatingPanel();
 
                 },
-                fail: function() {                                      // Wyświetlenie komunikatu o błędzie.
+                error: function() {                                      // Wyświetlenie komunikatu o błędzie.
                     container.html('<div class="loading">Proszę spróbować wkrótce.</div>');
                 }
             })
@@ -186,8 +185,8 @@ $(document).ready(function () {
     }
 
     function sortMovies() {
-        var table = $("table");
-        var $tbody = table.find("tbody");        // Store table body
+        // var table = $("table");
+        var movieListing = $(".movie_listing");
         var rows = $(".movie").toArray();
         var movieTitles = $(".titles");
 
@@ -196,12 +195,12 @@ $(document).ready(function () {
             if (movieTitles.hasClass("ascending") || movieTitles.hasClass("descending")) {
                 movieTitles.toggleClass("ascending descending");
                 console.log(rows);
-                $tbody.append(rows.reverse());
+                movieListing.append(rows.reverse());
             } else {
                 movieTitles.addClass("ascending");
                 rows.sort(function (a, b) {
-                    a = $(a).find("td").eq(0).text();
-                    b = $(b).find("td").eq(0).text();
+                    a = $(a).find("h3").text();
+                    b = $(b).find("h3").text();
 
                     if (a < b) {
                         return -1;
@@ -209,7 +208,7 @@ $(document).ready(function () {
                         return a > b ? 1 : 0;
                     }
                 });
-                $tbody.append(rows);
+                movieListing.append(rows);
             }
         })
     }
