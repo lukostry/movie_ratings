@@ -38,6 +38,7 @@ $(document).ready(function () {
             success: function(data) {
                 insertContent(data);
                 showRatings();
+                sortMovies();
                 /*var result1 = [];
                 result1 = data.filter(countOneStar);
                 console.log(result1.length);                               // Wyświetlenie zawartości.
@@ -76,7 +77,7 @@ $(document).ready(function () {
                     }
                 },
                 fail: function() {                                      // Wyświetlenie komunikatu o błędzie.
-                    container.html('<div class="loading">Proszę spróbować wkrótce.</div>');
+                    container.html("<div>Proszę spróbować wkrótce.</div>");
                 }
             });
         });
@@ -183,4 +184,34 @@ $(document).ready(function () {
             })
         });
     }
+
+    function sortMovies() {
+        var table = $("table");
+        var $tbody = table.find("tbody");        // Store table body
+        var rows = $(".movie").toArray();
+        var movieTitles = $(".titles");
+
+        movieTitles.on("click", function(){
+            console.log("works");
+            if (movieTitles.hasClass("ascending") || movieTitles.hasClass("descending")) {
+                movieTitles.toggleClass("ascending descending");
+                console.log(rows);
+                $tbody.append(rows.reverse());
+            } else {
+                movieTitles.addClass("ascending");
+                rows.sort(function (a, b) {
+                    a = $(a).find("td").eq(0).text();
+                    b = $(b).find("td").eq(0).text();
+
+                    if (a < b) {
+                        return -1;
+                    } else {
+                        return a > b ? 1 : 0;
+                    }
+                });
+                $tbody.append(rows);
+            }
+        })
+    }
+
 });
