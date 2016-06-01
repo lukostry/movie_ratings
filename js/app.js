@@ -65,18 +65,26 @@ $(document).ready(function () {
                 url: url,                                              // Ścieżka dostępu do pliku.
                 timeout: 2000,                                          // Czas oczekiwania.
                 success: function(data) {
-
+                    var paramsToDisplay;
                     fetchRatings(data);
-
-                    if ($(currentElement).data("voted")) {
-                        console.log("wypisac, ze osoba juz glosowala i dzieki");
-                    } else {
-                        insertRatingPanel(currentElement);
-                        rateMovie(url, currentElement);
-                    }
                 },
                 error: function() {                                      // Wyświetlenie komunikatu o błędzie.
                     container.html("<div>Proszę spróbować wkrótce.</div>");
+                },
+                complete: function()  {
+                    if ($(currentElement).data("voted")) {
+                        console.log("wypisac, ze osoba juz glosowala i dzieki");
+                    } else {
+                        if ($(currentElement).data("fetched")) {
+                            displayRatingPanel(currentElement, paramsToDisplay);
+                            rateMovie(url, currentElement);
+                        } else {
+                            $(currentElement).attr("data-fetched", true);
+                            createRatingPanel(currentElement);
+                            displayRatingPanel(currentElement, paramsToDisplay);
+                            rateMovie(url, currentElement);
+                        }
+                    }
                 }
             });
         });
@@ -119,6 +127,11 @@ $(document).ready(function () {
 
         mean = calculateMean(ratings);
         console.log(mean);
+
+        paramsToDisplay = {
+            avg: mean,
+            distribution: ratings
+        };
     }
 
     function calculateMean(array) {
@@ -131,10 +144,11 @@ $(document).ready(function () {
         return (sum/counter).toFixed(2);
     }
 
-    function insertRatingPanel(movie) {
+    function createRatingPanel(movie) {
+
         var wrapper = $("<div>", {class: "wrapper"});
         var ratingsDistribution = $("<div>", {class: "distribution"});
-        var averageRating = $("<div>", {class: "average"}).text(mean);
+        var averageRating = $("<div>", {class: "average"});
         var buttonsToRate = $("<div>", {class: "buttons_container"});
 
         var highestPossibleRating = 5;
@@ -148,6 +162,14 @@ $(document).ready(function () {
         wrapper.append(buttonsToRate);
 
         $(movie).append(wrapper);
+    }
+
+    function displayRatingPanel(currentElement, displayParameters) {
+        $(currentElement).find($(".average")).text(displayParameters.avg);
+        $(currentElement)
+            .find($(".wrapper"))
+            .not(":animated")
+            .slideToggle();
     }
 
     function rateMovie(url, parentEl) {
