@@ -92,7 +92,7 @@ body {
 
 /* line 9, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/base/_base.scss */
 .movie_rating_app {
-  width: 60%;
+  width: 50%;
   margin: 0 auto;
 }
 
@@ -272,4 +272,9 @@ header .titles, header div {
 .button_to_rate {
   width: 1em;
   height: 1em;
+}
+
+/* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_success.scss */
+.success {
+  display: none;
 }

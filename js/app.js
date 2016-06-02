@@ -26,7 +26,7 @@ $(document).ready(function () {
             type: "GET",                                           // Wybór metody: GET lub POST.
             url: url,
             // dataType: "text/plain",
-                                               // Ścieżka dostępu do pliku.
+
             timeout: 4000,                                          // Czas oczekiwania.
             beforeSend: function() {                                // Przed wykonaniem żądania Ajax.
                 container.append('<div id="load>Wczytywanie</div>');  // Wczytanie komunikatu.
@@ -38,12 +38,6 @@ $(document).ready(function () {
                 insertContent(data);
                 showRatings();
                 sortMovies();
-                /*var result1 = [];
-                result1 = data.filter(countOneStar);
-                console.log(result1.length);                               // Wyświetlenie zawartości.
-                console.log(result1);
-                console.log(data[0]);*/
-        // content.html( $(data).find('#container') ).hide().fadeIn(400);
             },
             error: function() {                                      // Wyświetlenie komunikatu o błędzie.
                 container.html('<div class="loading">Proszę spróbować wkrótce.</div>');
@@ -125,9 +119,9 @@ $(document).ready(function () {
                     container.html("<div>Proszę spróbować wkrótce.</div>");
                 },
                 complete: function()  {
-                    if ($(currentElement).data("voted")) {
+                    /*if ($(currentElement).data("voted")) {
                         console.log("wypisac, ze osoba juz glosowala i dzieki");
-                    } else {
+                    } else {*/
                         if ($(currentElement).data("fetched")) {
                             console.log("no działa!!!");
                             displayRatingPanel(currentElement, paramsToDisplay);
@@ -144,7 +138,7 @@ $(document).ready(function () {
 
                             rateMovie(url, currentElement);
                         }
-                    }
+                    // }
                 }
             });
         });
@@ -207,14 +201,19 @@ $(document).ready(function () {
     }
 
     function rateMovie(url, parentEl) {
-        var buttonsToRate = $(".button_to_rate");
+        var buttonsToRate = $(parentEl).find(".button_to_rate");
+
+        var buttonsContainer = $(parentEl).find(".buttons_container");
+        console.log(buttonsContainer);
+
+        var distributionWrapper = $(parentEl).find(".distribution");
 
         buttonsToRate.on("click", function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             var userRating = $(this).data("rating");
-            var wrapper = $(".rating_panel_wrapper");
+            // var wrapper = $(".rating_panel_wrapper");
 
             var newRating = {
                 "rating": userRating
@@ -227,10 +226,19 @@ $(document).ready(function () {
                 dataType: "json",                                             // Ścieżka dostępu do pliku.
                 timeout: 2000,                                          // Czas oczekiwania.
                 success: function() {
-                    console.log("wowowowo!!!");
                     $(parentEl).attr("data-voted", true);
-                    wrapper.remove();
-                    // function removeRatingPanel();
+                    buttonsContainer.remove();
+
+                    var success = $("<div>", {class: "success"});
+                    var message = $("<p>").text("Thanks for your vote, you can rate other movies as well!");
+                    var checkedFont = $("<div>", {class: "fa fa-check-circle-o"}).attr("aria-hidden", true);
+
+                    success.append(checkedFont);
+                    success.append(message);
+
+                    success.insertAfter(distributionWrapper).fadeIn(700).delay(1700).fadeOut(600, function(){
+                        success.remove();
+                    });
 
                 },
                 error: function() {                                      // Wyświetlenie komunikatu o błędzie.
