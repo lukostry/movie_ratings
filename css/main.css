@@ -111,7 +111,14 @@ header {
 }
 
 /* line 11, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_header.scss */
+header .titles {
+  cursor: pointer;
+}
+
+/* line 15, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_header.scss */
 header .titles, header div {
+  font-weight: 700;
+  text-transform: uppercase;
   flex: 0 1 50%;
   text-align: center;
 }
@@ -123,21 +130,23 @@ header .titles, header div {
 
 /* line 4, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
 .movie {
+  padding-top: 1em;
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-wrap: wrap;
 }
 
-/* line 8, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+/* line 9, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
 .movie:not(:last-child)::after {
   content: "";
-  height: 1px;
-  background-color: #614346;
+  height: 3px;
+  background-color: #ffffff;
+  margin-top: 1em;
   flex: 0 1 100%;
 }
 
-/* line 12, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+/* line 14, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
 .movie h3 {
   flex: 0 1 50%;
   text-align: center;
@@ -145,15 +154,16 @@ header .titles, header div {
   color: #a2abbd;
   font-weight: 700;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
-/* line 19, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+/* line 22, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
 .movie .poster_wrapper {
   flex: 0 1 50%;
   text-align: center;
 }
 
-/* line 22, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+/* line 25, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
 .movie .poster_wrapper img {
   width: 150px;
 }
@@ -164,7 +174,7 @@ header .titles, header div {
   text-align: center;
   display: none;
   font-size: 1rem;
-  color: #a2abbd;
+  color: #ffffff;
 }
 
 /* line 7, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
@@ -172,26 +182,20 @@ header .titles, header div {
   margin: 0.5em auto;
 }
 
-/* line 9, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 10, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .rating_panel_wrapper > *:not(:last-child)::after {
   content: "";
-  height: 1px;
+  height: 3px;
   background-color: #614346;
   display: block;
   width: 80%;
   margin: 0.5em auto 0 auto;
 }
 
-/* line 16, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
-.rating_panel_wrapper button {
-  width: 1em;
-  height: 1em;
-}
-
-/* line 21, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 20, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .distribution::before {
   content: "";
-  height: 1px;
+  height: 3px;
   background-color: #614346;
   width: 80%;
   display: block;
@@ -200,48 +204,72 @@ header .titles, header div {
 }
 
 /* line 29, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
-.rating_table {
-  margin: 0 auto;
-  width: 80%;
-  max-width: 260px;
+.buttons_container > * {
+  padding: 0.25em 0;
 }
 
-/* line 35, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 33, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+.rating_table {
+  margin: 0.75em auto;
+  width: 80%;
+  max-width: 260px;
+  font-size: 14px;
+}
+
+/* line 40, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .rating_row {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 25px;
   min-height: 22px;
 }
 
-/* line 39, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 45, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .star_counter {
   flex: 0 1 15%;
   margin: 1px 3px 0 0;
 }
 
-/* line 43, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 49, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .rating_percentage_visualition {
   flex: 0 1 70%;
   margin: 1px 6px;
   background-color: #f3f3f3;
-  border-radius: 5px;
+  border-radius: 2px;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
-/* line 50, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 56, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .rating_percentage_number {
   flex: 0 1 15%;
   margin: 1px 0 0 3px;
 }
 
-/* line 54, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 60, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .progress_bell {
-  background-color: yellow;
+  background-color: #ffb900;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
   width: 0%;
   height: 100%;
   min-height: 22px;
 }
 
-/* line 60, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+/* line 68, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+.avg_number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffb900;
+}
+
+/* line 73, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
 .hovered {
   color: #ffb900;
+}
+
+/* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_buttons.scss */
+.button_to_rate {
+  width: 1em;
+  height: 1em;
 }

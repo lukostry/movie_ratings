@@ -8,7 +8,12 @@ header {
 
     padding: 1em 0;
 
+    .titles {
+        cursor: pointer;
+    }
+
     .titles, div {
+        @include bolderUpperCase;
         flex: 0 1 50%;
         text-align: center;
     }

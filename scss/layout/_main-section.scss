@@ -2,11 +2,13 @@
     background-color: $listing_background_color;
 }
 .movie {
+    padding-top: 1em;
     @include flexYCentered(space-around);
     flex-wrap: wrap;
     //create a divider for all, except the last item
     &:not(:last-child)::after {
-        @include divider;
+        @include divider($header_font_color);
+        margin-top: 1em;
         flex: 0 1 100%;
     }
     h3 {
@@ -15,6 +17,7 @@
         font-size: $main_font_size;
         color: $listing_font_color;
         @include bolderUpperCase;
+        cursor: pointer;
     }
     .poster_wrapper {
         flex: 0 1 50%;

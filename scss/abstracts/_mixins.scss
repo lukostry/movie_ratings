@@ -15,8 +15,8 @@
   text-transform: uppercase;
 }
 
-@mixin divider {
+@mixin divider($color) {
     content: "";
-    height: 1px;
-    background-color: $divider_background_color;
+    height: 3px;
+    background-color: $color;
 }

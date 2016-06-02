@@ -165,8 +165,12 @@ $(document).ready(function () {
 
         var wrapper = $("<div>", {class: "rating_panel_wrapper"});
         var ratingsDistribution = $("<div>", {class: "distribution"});
-        var averageRating = $("<div>", {class: "average"});
+        var averageRating = $("<div>", {class: "average"}).text("Average user's rating: ");
+        var span = $("<span>", {class: "avg_number"});
+        var msg = $("<h4>").text("You can rate this movie (1-5 stars)!");
         var buttonsToRate = $("<div>", {class: "buttons_container"});
+
+        buttonsToRate.append(msg);
 
         var highestPossibleRating = 5;
 
@@ -177,6 +181,8 @@ $(document).ready(function () {
 
         wrapper.append(ratingsDistribution);
         wrapper.append(buttonsToRate);
+
+        averageRating.append(span);
         wrapper.append(averageRating);
 
         $(movie).append(wrapper);
@@ -193,7 +199,7 @@ $(document).ready(function () {
     }
 
     function displayRatingPanel(currentElement, displayParameters) {
-        $(currentElement).find($(".average")).text(displayParameters.avg);
+        $(currentElement).find($(".avg_number")).text(displayParameters.avg);
         $(currentElement)
             .find($(".rating_panel_wrapper"))
             .not(":animated")

@@ -3,37 +3,43 @@
     text-align: center;
     display: none;
     font-size: $smaller_font_size;
-    color: $listing_font_color;
+    color: $header_font_color;
     & > * {
         margin: 0.5em auto;
+
         &:not(:last-child)::after {
-            @include divider;
+            @include divider($divider_background_color);
             display: block;
             width: 80%;
             margin: 0.5em auto 0 auto;
         }
     }
-    button {
-        @include sizing(1em, 1em);
-    }
+
 }
 .distribution {
     &::before {
-        @include divider;
+        @include divider($divider_background_color);
         width: 80%;
         display: block;
         width: 80%;
         margin: 0 auto;
     };
 }
+.buttons_container {
+    & > * {
+        padding: 0.25em 0;
+    }
+}
 .rating_table {
-	margin: 0 auto;
+	margin: 0.75em auto;
     width: 80%;
     max-width: 260px;
+    font-size: $table_font_size;
 }
 
 .rating_row {
-	display: flex;
+	@include flexYCentered(space-between);
+    max-height: 25px;
 	min-height: 22px;
 }
 .star_counter {
@@ -44,7 +50,7 @@
 	flex: 0 1 70%;
 	margin: 1px 6px;
 	background-color: #f3f3f3;
-	border-radius: 5px;
+	border-radius: 2px;
 	box-shadow: inset 0 1px 2px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.1);
 }
 .rating_percentage_number {
@@ -52,10 +58,17 @@
 	margin: 1px 0 0 3px;
 }
 .progress_bell {
-	background-color: yellow;
+	background-color: $star_color;
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.05);
 	width: 0%;
 	height: 100%;
 	min-height: 22px;
+}
+.avg_number {
+    font-size: $main_font_size;
+    font-weight: $bolder_font;
+    color: $star_color;
 }
 .hovered {
     color: $star_color;
