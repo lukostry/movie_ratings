@@ -52,45 +52,7 @@ $(document).ready(function () {
     }
     loadMovies();
 
-    function showRatings() {
-        var allMovies = $(".movie");
-
-        allMovies.on("click", function() {
-            var url = "https://movie-ranking.herokuapp.com/movies/" + $(this).data("id") + "/ratings";
-            var currentElement = this;
-            var mean;
-
-            $.ajax({
-                type: "GET",                                           // Wybór metody: GET lub POST.
-                url: url,                                              // Ścieżka dostępu do pliku.
-                timeout: 2000,                                          // Czas oczekiwania.
-                success: function(data) {
-                    var paramsToDisplay;
-                    fetchRatings(data);
-                },
-                error: function() {                                      // Wyświetlenie komunikatu o błędzie.
-                    container.html("<div>Proszę spróbować wkrótce.</div>");
-                },
-                complete: function()  {
-                    if ($(currentElement).data("voted")) {
-                        console.log("wypisac, ze osoba juz glosowala i dzieki");
-                    } else {
-                        if ($(currentElement).data("fetched")) {
-                            displayRatingPanel(currentElement, paramsToDisplay);
-                            rateMovie(url, currentElement);
-                        } else {
-                            $(currentElement).attr("data-fetched", true);
-                            createRatingPanel(currentElement);
-                            displayRatingPanel(currentElement, paramsToDisplay);
-                            rateMovie(url, currentElement);
-                        }
-                    }
-                }
-            });
-        });
-    }
-
-    function fetchRatings(data) {
+    function fetchRatings(data, currentElement) {
         var oneStar = [];
         var twoStars = [];
         var threeStars = [];
@@ -130,9 +92,64 @@ $(document).ready(function () {
 
         paramsToDisplay = {
             avg: mean,
-            distribution: ratings
+            distribution: ratings,
+            calculatePercentage: function(star, ratings) {
+    			var sum = 0;
+    			for (var i=0; i < ratings.length; i++) {
+    				sum += ratings[i];
+    			}
+    			return ((Math.round((ratings[star]/sum)*100))+"%");
+    		}
         };
     }
+
+
+    function showRatings() {
+        var allMovies = $(".movie");
+
+        allMovies.on("click", function(e) {
+            e.stopImmediatePropagation();
+            var url = "https://movie-ranking.herokuapp.com/movies/" + $(this).data("id") + "/ratings";
+            var currentElement = this;
+            var mean;
+
+            $.ajax({
+                type: "GET",                                           // Wybór metody: GET lub POST.
+                url: url,                                              // Ścieżka dostępu do pliku.
+                timeout: 2000,                                          // Czas oczekiwania.
+                success: function(data) {
+                    var paramsToDisplay;
+                    fetchRatings(data, $(currentElement));
+                },
+                error: function() {                                      // Wyświetlenie komunikatu o błędzie.
+                    container.html("<div>Proszę spróbować wkrótce.</div>");
+                },
+                complete: function()  {
+                    if ($(currentElement).data("voted")) {
+                        console.log("wypisac, ze osoba juz glosowala i dzieki");
+                    } else {
+                        if ($(currentElement).data("fetched")) {
+                            console.log("no działa!!!");
+                            displayRatingPanel(currentElement, paramsToDisplay);
+                            animateRatings($(currentElement).find("table"), paramsToDisplay);
+
+                            rateMovie(url, currentElement);
+                        } else {
+                            $(currentElement).attr("data-fetched", true);
+                            createRatingPanel(currentElement);
+                            createTable($(currentElement).find(".distribution"));
+
+                            displayRatingPanel(currentElement, paramsToDisplay);
+                            animateRatings(($(currentElement).find("table")), paramsToDisplay);
+
+                            rateMovie(url, currentElement);
+                        }
+                    }
+                }
+            });
+        });
+    }
+
 
     function calculateMean(array) {
         var sum = 0;
@@ -146,7 +163,7 @@ $(document).ready(function () {
 
     function createRatingPanel(movie) {
 
-        var wrapper = $("<div>", {class: "wrapper"});
+        var wrapper = $("<div>", {class: "rating_panel_wrapper"});
         var ratingsDistribution = $("<div>", {class: "distribution"});
         var averageRating = $("<div>", {class: "average"});
         var buttonsToRate = $("<div>", {class: "buttons_container"});
@@ -159,8 +176,8 @@ $(document).ready(function () {
         }
 
         wrapper.append(ratingsDistribution);
-        wrapper.append(averageRating);
         wrapper.append(buttonsToRate);
+        wrapper.append(averageRating);
 
         $(movie).append(wrapper);
 
@@ -178,7 +195,7 @@ $(document).ready(function () {
     function displayRatingPanel(currentElement, displayParameters) {
         $(currentElement).find($(".average")).text(displayParameters.avg);
         $(currentElement)
-            .find($(".wrapper"))
+            .find($(".rating_panel_wrapper"))
             .not(":animated")
             .slideToggle();
     }
@@ -191,7 +208,7 @@ $(document).ready(function () {
             e.stopPropagation();
 
             var userRating = $(this).data("rating");
-            var wrapper = $(".wrapper");
+            var wrapper = $(".rating_panel_wrapper");
 
             var newRating = {
                 "rating": userRating
@@ -244,6 +261,45 @@ $(document).ready(function () {
                 movieListing.append(rows);
             }
         })
+    }
+
+    function createTable(container) {
+        var table = $("<table>", {class: "rating_table"});
+	    var tableBody = $("<tbody>", {class: "rating_display_container"});
+
+
+	    for (var i = 0; i < 5; i++) {
+		          var tableRow = $("<tr>", {class: "rating_row"});
+		                tableRow.append($("<td>", {class: "star_counter"}).text((i+1) + " star"));
+		                tableRow.append($("<td>", {class: "rating_percentage_visualition"})
+		                        .append($("<div>", {class: "progress_bell"})));
+
+		                tableRow.append($("<td>", {class: "rating_percentage_number"}));
+
+		                tableBody.append(tableRow);
+	   }
+
+	   table.append(tableBody);
+	   $(container).append(table);
+    }
+
+    function animateRatings(table, object) {
+
+        console.log(table);
+
+
+        var row = $(table).find(".progress_bell");
+		var percentageNumber = $(table).find(".rating_percentage_number");
+
+		row.each(function(index, el) {
+			$(el).animate ({
+				width: paramsToDisplay.calculatePercentage(index, object.distribution)
+			}, 1000);
+		});
+
+		percentageNumber.each(function(index, el) {
+			$(el).text(paramsToDisplay.calculatePercentage(index, object.distribution));
+		});
     }
 
 });

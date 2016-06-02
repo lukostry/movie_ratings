@@ -14,3 +14,9 @@
   font-weight: $bolder_font;
   text-transform: uppercase;
 }
+
+@mixin divider {
+    content: "";
+    height: 1px;
+    background-color: $divider_background_color;
+}
