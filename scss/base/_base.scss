@@ -1,0 +1,12 @@
+body {
+    font-family: $font_stack;
+    background-color: $main_background_color;
+}
+.container {
+    width: 80%;
+    margin: 1em auto 0 auto;
+}
+.movie_rating_app {
+    width: 60%;
+    margin: 0 auto;
+}

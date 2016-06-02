@@ -1,0 +1,20 @@
+.wrapper {
+    display: none;
+    font-size: $smaller_font_size;
+    color: $listing_font_color;
+    button {
+        @include sizing(1em, 1em);
+    }
+}
+svg {
+    width: 1em;
+    height: 1em;
+    // display: block !important;
+    .path1 {
+        fill: yellow;
+    }
+}
+
+.hovered {
+    color: $star_color;
+}

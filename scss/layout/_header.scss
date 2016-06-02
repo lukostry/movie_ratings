@@ -1,0 +1,15 @@
+header {
+    @include flexYCentered(space-around);
+    background-color: #edad61;
+    color: $header_font_color;
+    border-radius: $top_radius;
+    font-size: $main_font_size;
+    @include bolderUpperCase;
+
+    padding: 1em 0;
+
+    .titles, div {
+        flex: 0 1 50%;
+        text-align: center;
+    }
+}

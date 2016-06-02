@@ -1,0 +1,29 @@
+.movie_listing {
+    background-color: $listing_background_color;
+}
+.movie {
+    @include flexYCentered(space-around);
+    flex-wrap: wrap;
+    //create a divider for all, except the last item
+    &:not(:last-child)::after {
+        content: "";
+        flex: 0 1 100%;
+        // width: 100%;
+        height: 1px;
+        background-color: $divider_background_color;
+    }
+    h3 {
+        flex: 0 1 50%;
+        text-align: center;
+        font-size: $main_font_size;
+        color: $listing_font_color;
+        @include bolderUpperCase;
+    }
+    .poster_wrapper {
+        flex: 0 1 50%;
+        text-align: center;
+        img {
+            width: $image_width;
+        }
+    }
+}

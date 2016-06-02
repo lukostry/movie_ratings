@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -21,7 +21,7 @@ time, mark, audio, video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  font-weight: normal;
+  font-weight: inherit;
   vertical-align: baseline;
 }
 
@@ -76,4 +76,113 @@ button {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+/* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/base/_base.scss */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #030303;
+}
+
+/* line 5, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/base/_base.scss */
+.container {
+  width: 80%;
+  margin: 1em auto 0 auto;
+}
+
+/* line 9, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/base/_base.scss */
+.movie_rating_app {
+  width: 60%;
+  margin: 0 auto;
+}
+
+/* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_header.scss */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #edad61;
+  color: #ffffff;
+  border-radius: 1.5em 1.5em 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1em 0;
+}
+
+/* line 11, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_header.scss */
+header .titles, header div {
+  flex: 0 1 50%;
+  text-align: center;
+}
+
+/* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+.movie_listing {
+  background-color: #2f2f3a;
+}
+
+/* line 4, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+.movie {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+/* line 8, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+.movie:not(:last-child)::after {
+  content: "";
+  flex: 0 1 100%;
+  height: 1px;
+  background-color: #614346;
+}
+
+/* line 15, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+.movie h3 {
+  flex: 0 1 50%;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #a2abbd;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* line 22, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+.movie .poster_wrapper {
+  flex: 0 1 50%;
+  text-align: center;
+}
+
+/* line 25, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/layout/_main-section.scss */
+.movie .poster_wrapper img {
+  width: 150px;
+}
+
+/* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+.wrapper {
+  display: none;
+  font-size: 1rem;
+  color: #a2abbd;
+}
+
+/* line 5, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+.wrapper button {
+  width: 1em;
+  height: 1em;
+}
+
+/* line 9, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* line 13, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+svg .path1 {
+  fill: yellow;
+}
+
+/* line 18, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/components/_rating-panel.scss */
+.hovered {
+  color: #ffb900;
 }

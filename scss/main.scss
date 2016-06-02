@@ -6,6 +6,8 @@
 @import 'base/base';
 
 @import 'layout/grid';
-@import 'layout/listing';
+@import "layout/header";
+@import 'layout/main-section';
 
+@import "components/rating-panel";
 @import 'components/buttons';

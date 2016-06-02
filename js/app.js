@@ -6,7 +6,7 @@ $(document).ready(function () {
             var li = $("<li>", {class: "movie"});
             li.attr("data-id", movie.id);
             var title = $("<h3>").text(movie.title);
-            var posterContainer = $("<div>");
+            var posterContainer = $("<div>", {class: "poster_wrapper"});
             var moviePoster = $("<img>").attr("src", movie.poster);
 
             posterContainer.append(moviePoster);
@@ -27,7 +27,7 @@ $(document).ready(function () {
             url: url,
             // dataType: "text/plain",
                                                // Ścieżka dostępu do pliku.
-            timeout: 2000,                                          // Czas oczekiwania.
+            timeout: 4000,                                          // Czas oczekiwania.
             beforeSend: function() {                                // Przed wykonaniem żądania Ajax.
                 container.append('<div id="load>Wczytywanie</div>');  // Wczytanie komunikatu.
             },
@@ -154,7 +154,8 @@ $(document).ready(function () {
         var highestPossibleRating = 5;
 
         for (var i=0; i < highestPossibleRating; i++) {
-            buttonsToRate.append($("<button>", {class: "button_to_rate"}).attr("data-rating", (i+1)));
+            buttonsToRate.append($("<button>", {class: "button_to_rate"}).attr("data-rating", (i+1))
+                         .append($("<i>", {class: "fa fa-star"}).attr("aria-hidden", "true")));
         }
 
         wrapper.append(ratingsDistribution);
@@ -162,6 +163,16 @@ $(document).ready(function () {
         wrapper.append(buttonsToRate);
 
         $(movie).append(wrapper);
+
+        $(".buttons_container").on("mouseenter", "button", function(){
+            $(this).find("i").addClass("hovered");
+            $(this).prevAll().find("i").addClass("hovered");
+        });
+
+        $(".buttons_container").on("mouseleave", "button", function(){
+            $(this).find("i").removeClass("hovered");
+            $(this).prevAll().find("i").removeClass("hovered");
+        });
     }
 
     function displayRatingPanel(currentElement, displayParameters) {

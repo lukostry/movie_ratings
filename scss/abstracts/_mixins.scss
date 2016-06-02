@@ -1,0 +1,16 @@
+@mixin sizing($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+//mixin for flexboxes that are centered on the y-axis, position of elements on the x-axis will be passed as an arument
+@mixin flexYCentered($position) {
+  display: flex;
+  align-items: center;
+  justify-content: $position;
+}
+
+@mixin bolderUpperCase {
+  font-weight: $bolder_font;
+  text-transform: uppercase;
+}

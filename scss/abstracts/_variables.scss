@@ -1,0 +1,20 @@
+$font_stack: ("Helvetica Neue", Helvetica, Arial, sans-serif);
+
+//defining colors
+$main_background_color: #030303;
+$header_background_color: #edad61;
+$header_font_color: #ffffff;
+$listing_background_color: #2f2f3a;
+$listing_font_color: #a2abbd;
+$main_font_color: #a2abbd;
+$divider_background_color: #614346;
+$star_color: #ffb900;
+
+$top_radius: 1.5em 1.5em 0 0;
+
+$image_width: 150px;
+
+//defining font sizes
+$main_font_size: 1.5rem;
+$smaller_font_size: $main_font_size / 1.5;
+$bolder_font: 700;
