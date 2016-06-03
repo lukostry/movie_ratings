@@ -10,3 +10,5 @@ http://lukostry.github.io/movie_ratings/
 
 - because of the use of CSS flex property this will not be displayed correctly in older browsers (esp. IE10 and earlier);
 - make sure JavaScript is enabled in your browser
+
+####Full support for mobile devices will be added in the next days
