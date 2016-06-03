@@ -1,5 +1,5 @@
 header {
-    @include flexYCentered(space-around);
+    @include flexYCentered(space-between);
     background-color: #edad61;
     color: $header_font_color;
     border-radius: $top_radius;
@@ -10,10 +10,29 @@ header {
 
     .titles {
         cursor: pointer;
+        flex: 0 1 40%;
+        text-align: center;
+        &:hover {
+            color: $listing_background_color;
+            & + div {
+                color: $listing_background_color;
+            }
+        }
     }
 
-    .titles, div {
-        @include bolderUpperCase;
+    .sorting_icons {
+        flex: 0 1 10%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        // text-align: center;
+        .fa-caret-up, .fa-caret-down {
+            display: none;
+            font-size: $main_font_size;
+        }
+    }
+    .poster {
         flex: 0 1 50%;
         text-align: center;
     }

@@ -1,3 +1,8 @@
 .success {
     display: none;
+    color: $success_color;
+    i {
+        color: $success_color;
+        font-size: $main_font_size;
+    }
 }

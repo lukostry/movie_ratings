@@ -5,6 +5,7 @@ $(document).ready(function () {
         $.each(movies, function(index, movie) {
             var li = $("<li>", {class: "movie"});
             li.attr("data-id", movie.id);
+
             var title = $("<h3>").text(movie.title);
             var posterContainer = $("<div>", {class: "poster_wrapper"});
             var moviePoster = $("<img>").attr("src", movie.poster);
@@ -119,26 +120,22 @@ $(document).ready(function () {
                     container.html("<div>Proszę spróbować wkrótce.</div>");
                 },
                 complete: function()  {
-                    /*if ($(currentElement).data("voted")) {
-                        console.log("wypisac, ze osoba juz glosowala i dzieki");
-                    } else {*/
-                        if ($(currentElement).data("fetched")) {
-                            console.log("no działa!!!");
-                            displayRatingPanel(currentElement, paramsToDisplay);
-                            animateRatings($(currentElement).find("table"), paramsToDisplay);
+                    if ($(currentElement).data("fetched")) {
 
-                            rateMovie(url, currentElement);
-                        } else {
-                            $(currentElement).attr("data-fetched", true);
-                            createRatingPanel(currentElement);
-                            createTable($(currentElement).find(".distribution"));
+                        displayRatingPanel(currentElement, paramsToDisplay);
+                        animateRatings($(currentElement).find("table"), paramsToDisplay);
 
-                            displayRatingPanel(currentElement, paramsToDisplay);
-                            animateRatings(($(currentElement).find("table")), paramsToDisplay);
+                        rateMovie(url, currentElement);
+                    } else {
+                        $(currentElement).attr("data-fetched", true);
+                        createRatingPanel(currentElement);
+                        createTable($(currentElement).find(".distribution"));
 
-                            rateMovie(url, currentElement);
-                        }
-                    // }
+                        displayRatingPanel(currentElement, paramsToDisplay);
+                        animateRatings(($(currentElement).find("table")), paramsToDisplay);
+
+                        rateMovie(url, currentElement);
+                    }
                 }
             });
         });
@@ -231,7 +228,7 @@ $(document).ready(function () {
 
                     var success = $("<div>", {class: "success"});
                     var message = $("<p>").text("Thanks for your vote, you can rate other movies as well!");
-                    var checkedFont = $("<div>", {class: "fa fa-check-circle-o"}).attr("aria-hidden", true);
+                    var checkedFont = $("<i>", {class: "fa fa-check-circle-o"}).attr("aria-hidden", true);
 
                     success.append(checkedFont);
                     success.append(message);
@@ -258,10 +255,12 @@ $(document).ready(function () {
             console.log("works");
             if (movieTitles.hasClass("ascending") || movieTitles.hasClass("descending")) {
                 movieTitles.toggleClass("ascending descending");
-                console.log(rows);
+                $(".fa-caret-up").toggle();
+                $(".fa-caret-down").toggle();
                 movieListing.append(rows.reverse());
             } else {
                 movieTitles.addClass("ascending");
+                $(".fa-caret-up").show();
                 rows.sort(function (a, b) {
                     a = $(a).find("h3").text();
                     b = $(b).find("h3").text();
@@ -298,8 +297,6 @@ $(document).ready(function () {
     }
 
     function animateRatings(table, object) {
-
-        console.log(table);
 
 
         var row = $(table).find(".progress_bell");
