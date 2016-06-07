@@ -20,8 +20,9 @@ $(document).ready(function () {
     }
 
     function loadMovies() {
-        var url = "https://movie-ranking.herokuapp.com/movies";
+        var url = "https://movie-ranking.hrokuapp.com/movies";
         var container = $(".container");
+        var app = $(".movie_rating_app");
 
         $.ajax({
             type: "GET",                                           // Wybór metody: GET lub POST.
@@ -30,10 +31,10 @@ $(document).ready(function () {
 
             timeout: 4000,                                          // Czas oczekiwania.
             beforeSend: function() {                                // Przed wykonaniem żądania Ajax.
-                container.append('<div id="load>Wczytywanie</div>');  // Wczytanie komunikatu.
+                container.append('<div id="load" class="">Wczytywanie</div>');  // Wczytanie komunikatu.
             },
             complete: function() {                                  // Po wykonaniu żądania Ajax.
-                $('#load').remove();                             // Usunięcie komunikatu.
+                $('#load').remove();                                // Usunięcie komunikatu.
             },
             success: function(data) {
                 insertContent(data);
@@ -41,7 +42,15 @@ $(document).ready(function () {
                 sortMovies();
             },
             error: function() {                                      // Wyświetlenie komunikatu o błędzie.
-                container.html('<div class="loading">Proszę spróbować wkrótce.</div>');
+
+                var error = $("<div>", {class: "error"});
+                var message = $("<p>").text(" Oops, something went wrong, please try to refresh the page");
+                var xFont = $("<i>", {class: "fa fa-times-circle-o"}).attr("aria-hidden", true);
+
+                message.prepend(xFont);
+                error.append(message);
+
+                app.append(error);
             }
         });
     }
@@ -101,6 +110,7 @@ $(document).ready(function () {
 
     function showRatings() {
         var allMovies = $(".movie");
+        var app = $(".movie_rating_app");
 
         allMovies.on("click", function(e) {
             e.stopImmediatePropagation();
@@ -111,13 +121,21 @@ $(document).ready(function () {
             $.ajax({
                 type: "GET",                                           // Wybór metody: GET lub POST.
                 url: url,                                              // Ścieżka dostępu do pliku.
-                timeout: 2000,                                          // Czas oczekiwania.
+                timeout: 2000,                                         // Czas oczekiwania.
                 success: function(data) {
                     var paramsToDisplay;
                     fetchRatings(data, $(currentElement));
                 },
                 error: function() {                                      // Wyświetlenie komunikatu o błędzie.
-                    container.html("<div>Proszę spróbować wkrótce.</div>");
+
+                    var error = $("<div>", {class: "error"});
+                    var message = $("<p>").text(" Oops, something went wrong, please try to refresh the page");
+                    var xFont = $("<i>", {class: "fa fa-times-circle-o"}).attr("aria-hidden", true);
+
+                    message.prepend(xFont);
+                    error.append(message);
+
+                    app.append(error);
                 },
                 complete: function()  {
                     if ($(currentElement).data("fetched")) {
@@ -220,7 +238,7 @@ $(document).ready(function () {
                 type: "POST",                                           // Wybór metody: GET lub POST.
                 url: url,
                 data: newRating,
-                dataType: "json",                                             // Ścieżka dostępu do pliku.
+                dataType: "json",                                       // Ścieżka dostępu do pliku.
                 timeout: 2000,                                          // Czas oczekiwania.
                 success: function() {
                     $(parentEl).attr("data-voted", true);
@@ -239,7 +257,17 @@ $(document).ready(function () {
 
                 },
                 error: function() {                                      // Wyświetlenie komunikatu o błędzie.
-                    container.html('<div class="loading">Proszę spróbować wkrótce.</div>');
+
+                    var error = $("<div>", {class: "error"});
+                    var message = $("<p>").text(" Oops, something went wrong, please try to refresh the page and vote again");
+                    var xFont = $("<i>", {class: "fa fa-times-circle-o"}).attr("aria-hidden", true);
+
+                    message.prepend(xFont);
+                    error.append(message);
+
+                    error.insertAfter(distributionWrapper).fadeIn(700).delay(1700).fadeOut(600, function(){
+                        error.remove();
+                    });
                 }
             })
         });
