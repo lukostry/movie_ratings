@@ -60,6 +60,11 @@ table {
   border-spacing: 0;
 }
 
+/* line 51, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/base/_reset.scss */
+td {
+  display: block;
+}
+
 /* line 1, C:/Users/Komp Ostrego/Desktop/Coders_lab/movie_ratings/scss/base/_reset-buttons.scss */
 button {
   -webkit-box-sizing: content-box;
