@@ -20,7 +20,7 @@ $(document).ready(function () {
     }
 
     function loadMovies() {
-        var url = "https://movie-ranking.hrokuapp.com/movies";
+        var url = "https://movie-ranking.herokuapp.com/movies";
         var container = $(".container");
         var app = $(".movie_rating_app");
 
