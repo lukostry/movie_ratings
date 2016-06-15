@@ -99,7 +99,7 @@ $(document).ready(function () {
             distribution: ratings,
             calculatePercentage: function(star, ratings) {
     			var sum = 0;
-    			for (var i=0; i < ratings.length; i++) {
+    			for (var i=0, maxLength = ratings.length; i < maxLength; i++) {
     				sum += ratings[i];
     			}
     			return ((Math.round((ratings[star]/sum)*100))+"%");
@@ -163,7 +163,7 @@ $(document).ready(function () {
     function calculateMean(array) {
         var sum = 0;
         var counter = 0;
-        for (var i = 0; i < array.length; i++) {
+        for (var i = 0, maxLength = array.length; i < maxLength; i++) {
             sum += (array[i] * (i+1));
             counter += array[i];
         }
@@ -178,11 +178,9 @@ $(document).ready(function () {
         var span = $("<span>", {class: "avg_number"});
         var msg = $("<h4>").text("You can rate this movie (1-5 stars)!");
         var buttonsToRate = $("<div>", {class: "buttons_container"});
-
-        buttonsToRate.append(msg);
-
         var highestPossibleRating = 5;
 
+        buttonsToRate.append(msg);
         for (var i=0; i < highestPossibleRating; i++) {
             buttonsToRate.append($("<button>", {class: "button_to_rate"}).attr("data-rating", (i+1))
                          .append($("<i>", {class: "fa fa-star"}).attr("aria-hidden", "true")));
@@ -269,7 +267,7 @@ $(document).ready(function () {
                         error.remove();
                     });
                 }
-            })
+            });
         });
     }
 
@@ -301,7 +299,7 @@ $(document).ready(function () {
                 });
                 movieListing.append(rows);
             }
-        })
+        });
     }
 
     function createTable(container) {
