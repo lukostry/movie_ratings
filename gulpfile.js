@@ -16,4 +16,23 @@ gulp.task("sass", function(){
 
 gulp.task("watch", function(){
     gulp.watch("scss/**/*.scss", ["sass"]);
-})
+});
+
+var handlebars = require("gulp-handlebars");
+var wrap = require("gulp-wrap");
+var declare = require("gulp-declare");
+var concat = require("gulp-concat");
+
+gulp.task("templates", function(){
+  gulp.src('templates/*.handlebars')
+    .pipe(handlebars({
+      handlebars: require("handlebars")
+    }))
+    .pipe(wrap("Handlebars.template(<%= contents %>)"))
+    .pipe(declare({
+      namespace: "Handlebars.templates",
+      noRedeclare: true, // Avoid duplicate declarations
+    }))
+    .pipe(concat("templates.js"))
+    .pipe(gulp.dest("./js/"));
+});

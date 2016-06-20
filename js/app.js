@@ -2,7 +2,12 @@ $(document).ready(function () {
 
     function insertContent(movies) {
         var listing = $(".movie_listing");
-        $.each(movies, function(index, movie) {
+        var movieListingTemplate = Handlebars.templates.listing(movies);
+
+        listing.append(movieListingTemplate);
+
+        /*REMOVE*/
+        /*$.each(movies, function(index, movie) {
             var li = $("<li>", {class: "movie"});
             li.attr("data-id", movie.id);
 
@@ -16,7 +21,8 @@ $(document).ready(function () {
             li.append(posterContainer);
 
             listing.append(li);
-        });
+        });*/
+        /*REMOVE*/
     }
 
     function loadMovies() {
