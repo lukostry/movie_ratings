@@ -1,0 +1,10 @@
+<div class="rating_panel_wrapper">
+    <div class="distribution"></div>
+    <div class="buttons_container">
+        <h4>You can rate this movie (1-5 stars)!</h4>
+        {{#each stars}}
+        <button class="button_to_rate" data-rating="{{this}}"><i class="fa fa-star" aria-hidden="true"></i></button>
+        {{/each}}
+    </div>
+    <div class="average">Average user's rating: <span class="avg_number"></span></div>    
+</div>

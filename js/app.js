@@ -1,28 +1,11 @@
 $(document).ready(function () {
 
+
     function insertContent(movies) {
         var listing = $(".movie_listing");
         var movieListingTemplate = Handlebars.templates.listing(movies);
 
         listing.append(movieListingTemplate);
-
-        /*REMOVE*/
-        /*$.each(movies, function(index, movie) {
-            var li = $("<li>", {class: "movie"});
-            li.attr("data-id", movie.id);
-
-            var title = $("<h3>").text(movie.title);
-            var posterContainer = $("<div>", {class: "poster_wrapper"});
-            var moviePoster = $("<img>").attr("src", movie.poster);
-
-            posterContainer.append(moviePoster);
-
-            li.append(title);
-            li.append(posterContainer);
-
-            listing.append(li);
-        });*/
-        /*REMOVE*/
     }
 
     function loadMovies() {
@@ -48,13 +31,11 @@ $(document).ready(function () {
                 sortMovies();
             },
             error: function() {                                      // Wyświetlenie komunikatu o błędzie.
-
-                var error = $("<div>", {class: "error"});
-                var message = $("<p>").text(" Oops, something went wrong, please try to refresh the page");
-                var xFont = $("<i>", {class: "fa fa-times-circle-o"}).attr("aria-hidden", true);
-
-                message.prepend(xFont);
-                error.append(message);
+                var context = {
+                    class: "error",
+                    icon: "fa fa-times-circle-o"
+                };
+                var error = Handlebars.templates.error(context);
 
                 app.append(error);
             }
@@ -133,13 +114,11 @@ $(document).ready(function () {
                     fetchRatings(data, $(currentElement));
                 },
                 error: function() {                                      // Wyświetlenie komunikatu o błędzie.
-
-                    var error = $("<div>", {class: "error"});
-                    var message = $("<p>").text(" Oops, something went wrong, please try to refresh the page");
-                    var xFont = $("<i>", {class: "fa fa-times-circle-o"}).attr("aria-hidden", true);
-
-                    message.prepend(xFont);
-                    error.append(message);
+                    var context = {
+                        class: "error",
+                        icon: "fa fa-times-circle-o"
+                    };
+                    var error = Handlebars.templates.error(context);
 
                     app.append(error);
                 },
@@ -177,26 +156,10 @@ $(document).ready(function () {
     }
 
     function createRatingPanel(movie) {
-
-        var wrapper = $("<div>", {class: "rating_panel_wrapper"});
-        var ratingsDistribution = $("<div>", {class: "distribution"});
-        var averageRating = $("<div>", {class: "average"}).text("Average user's rating: ");
-        var span = $("<span>", {class: "avg_number"});
-        var msg = $("<h4>").text("You can rate this movie (1-5 stars)!");
-        var buttonsToRate = $("<div>", {class: "buttons_container"});
-        var highestPossibleRating = 5;
-
-        buttonsToRate.append(msg);
-        for (var i=0; i < highestPossibleRating; i++) {
-            buttonsToRate.append($("<button>", {class: "button_to_rate"}).attr("data-rating", (i+1))
-                         .append($("<i>", {class: "fa fa-star"}).attr("aria-hidden", "true")));
-        }
-
-        wrapper.append(ratingsDistribution);
-        wrapper.append(buttonsToRate);
-
-        averageRating.append(span);
-        wrapper.append(averageRating);
+        var context = {
+            stars: [1, 2, 3, 4, 5]
+        };
+        var wrapper = Handlebars.templates.ratingPanel(context);
 
         $(movie).append(wrapper);
 
@@ -248,15 +211,14 @@ $(document).ready(function () {
                     $(parentEl).attr("data-voted", true);
                     buttonsContainer.remove();
 
-                    var success = $("<div>", {class: "success"});
-                    var message = $("<p>").text("Thanks for your vote, you can rate other movies as well!");
-                    var checkedFont = $("<i>", {class: "fa fa-check-circle-o"}).attr("aria-hidden", true);
+                    var context = {
+                        class: "success",
+                        icon: "fa fa-check-circle-o"
+                    };
+                    var success = Handlebars.templates.success(context);
 
-                    success.append(checkedFont);
-                    success.append(message);
-
-                    success.insertAfter(distributionWrapper).fadeIn(700).delay(1700).fadeOut(600, function(){
-                        success.remove();
+                    $(success).insertAfter(distributionWrapper).fadeIn(700).delay(1700).fadeOut(600, function(){
+                        $(success).remove();
                     });
 
                 },
@@ -309,22 +271,11 @@ $(document).ready(function () {
     }
 
     function createTable(container) {
-        var table = $("<table>", {class: "rating_table"});
-	    var tableBody = $("<tbody>", {class: "rating_display_container"});
+        var context = {
+            stars: ["1 star", "2 star", "3 star", "4 star", "5 star"]
+        };
+        var table = Handlebars.templates.ratingTable(context);
 
-
-	    for (var i = 0; i < 5; i++) {
-		          var tableRow = $("<tr>", {class: "rating_row"});
-		                tableRow.append($("<td>", {class: "star_counter"}).text((i+1) + " star"));
-		                tableRow.append($("<td>", {class: "rating_percentage_visualition"})
-		                        .append($("<div>", {class: "progress_bell"})));
-
-		                tableRow.append($("<td>", {class: "rating_percentage_number"}));
-
-		                tableBody.append(tableRow);
-	   }
-
-	   table.append(tableBody);
 	   $(container).append(table);
     }
 
