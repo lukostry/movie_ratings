@@ -1,9 +1,159 @@
-$(document).ready(function () {
+//Declare a global namespace
+
+var MOVIE_RATING_APP = MOVIE_RATING_APP || {};
+
+//Add the `namespace` method which will enable safer creation of modules
+
+MOVIE_RATING_APP.namespace = function(nsString) {
+    //variable `parts` will store dot separated values in an array
+    var parts = nsString.split("."),
+        parentEl = MOVIE_RATING_APP,
+        i;
+
+    //strip redundant leading global
+    if (parts[0] === "MOVIE_RATING_APP") {
+        parts = parts.slice(1);
+    }
+
+    for (i = 0; i < parts.length; i++) {
+        //create a property if it doesn't existing
+        if (typeof parentEl[parts[i]] === "undefined") {
+            parentEl[parts[i]] = {};
+        }
+        //New defined property will become new parent element itself
+        parentEl = parentEl[parts[i]];
+    }
+    return parentEl;
+};
+
+/*Config module*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.config");
+
+MOVIE_RATING_APP.config = {
+    URL_BASE: "https://movie-ranking.herokuapp.com/movies",
+
+    MSG_LOADING: "",
+
+    //selected DOM nodes
+    DOM_listing: ".movie_listing",
+    DOM_container: ".container",
+    DOM_app: ".movie_rating_app",
+
+    //Parameters to be passed to Ajax requests
+    AJAX_init: {
+        type: "GET",
+        dataType: "json",
+        url: "https://movie-ranking.herokuapp.com/movies",
+        timeout: 4000
+    },
+
+    //Handlebars templates
+    HANDLEBARS_LISTING: function(context) {
+        return Handlebars.templates.listing(context);
+    }
+};
+
+/* Utility module which contains feature to handle Ajax requests*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.utilities");
+
+MOVIE_RATING_APP.utilities = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config;
+
+    var server = function(conf) {
+        return $.ajax({
+            type: conf.type,
+            url: conf.url,
+            timeout: conf.timeout,
+            dataType: conf.dataType,
+            data: conf.data
+        });
+    };
+
+    //public API
+    return {
+        server: server
+    };
+}());
+
+/*Module for inserting content*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.insertContent");
+
+MOVIE_RATING_APP.insertContent = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config;
+
+    var listing = $(config.DOM_listing),
+        movieListingTemplate = config.HANDLEBARS_LISTING;
+
+    function showMovies(movies) {
+        listing.append(movieListingTemplate(movies));
+    }
+    //return a public API
+    return {
+        showMovies: showMovies
+    };
+}());
+
+/*Module for sorting movies*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.sortMovies");
+
+MOVIE_RATING_APP.sortMovies = (function() {
+    //funcionalities goes here
+}());
+
+/*Module for loading movies*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.loadMovies");
+
+MOVIE_RATING_APP.loadMovies = (function() {
+
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config,
+        insertContent = MOVIE_RATING_APP.insertContent,
+        util = MOVIE_RATING_APP.utilities;
+
+    var init = function() {
+        util.server(config.AJAX_init)
+            // .then(function() {console.log("Add UI - loading");})
+            .done(function callback(data, textStatus, jqXHR) {
+                insertContent.showMovies(data);
+            })
+            .done(function() {console.log("cos tam dalej");})
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log("Add UI - fail");
+                console.log(errorThrown);
+            })
+            .always(function() {console.log("Remove UI - loading");});
+    };
+
+    //public API
+    return init;
+}());
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.initialization");
+
+MOVIE_RATING_APP.initialization = (function() {
+    //declaring dependecies
+    var init
+}());
+
+$(document).ready(MOVIE_RATING_APP.loadMovies);
+
+/*$(document).ready(function () {
 
 
     function insertContent(movies) {
-        var listing = $(".movie_listing");
-        var movieListingTemplate = Handlebars.templates.listing(movies);
+        //declaring dependecies
+        var config = MOVIE_RATING_APP.config;
+
+        var listing = $(config.DOM_listing),
+            // movieListingTemplate = Handlebars.templates.listing(movies);
+            movieListingTemplate = config.HANDLEBARS_LISTING(movies);
 
         listing.append(movieListingTemplate);
     }
@@ -122,7 +272,7 @@ $(document).ready(function () {
 
                     app.append(error);
                 },
-                complete: function()  {
+                complete: function() {
                     if ($(currentElement).data("fetched")) {
 
                         displayRatingPanel(currentElement, paramsToDisplay);
@@ -297,3 +447,4 @@ $(document).ready(function () {
     }
 
 });
+*/
