@@ -39,6 +39,8 @@ MOVIE_RATING_APP.config = {
     DOM_listing: ".movie_listing",
     DOM_container: ".container",
     DOM_app: ".movie_rating_app",
+    DOM_movie_titles: ".titles",
+    DOM_movie_items: ".movie",
 
     //Parameters to be passed to Ajax requests
     AJAX_init: {
@@ -53,6 +55,26 @@ MOVIE_RATING_APP.config = {
         return Handlebars.templates.listing(context);
     }
 };
+
+/*Module for inserting content*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.eventHandlers");
+
+MOVIE_RATING_APP.eventHandlers = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config;
+
+    var handleSort = function(sortFunc) {
+        var movieTitles = $(config.DOM_movie_titles);
+
+        movieTitles.on("click", sortFunc);
+    };
+
+    //public API
+    return {
+        handleSort: handleSort
+    };
+}());
 
 /* Utility module which contains feature to handle Ajax requests*/
 
@@ -100,10 +122,45 @@ MOVIE_RATING_APP.insertContent = (function() {
 
 /*Module for sorting movies*/
 
-MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.sortMovies");
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.sorting");
 
-MOVIE_RATING_APP.sortMovies = (function() {
-    //funcionalities goes here
+MOVIE_RATING_APP.sorting = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config;
+
+    var sortMovies = function() {
+
+        var movieListing = $(config.DOM_listing),
+            movieTitles = $(config.DOM_movie_titles),
+            rows = $(config.DOM_movie_items).toArray();
+
+        if (!(movieTitles.hasClass("ascending") || movieTitles.hasClass("descending"))) {
+            movieTitles.addClass("ascending");
+            $(".fa-caret-up").show();
+            rows.sort(function (a, b) {
+                a = $(a).find("h3").text();
+                b = $(b).find("h3").text();
+
+                if (a < b) {
+                    return -1;
+                } else {
+                    return a > b ? 1 : 0;
+                }
+            });
+            movieListing.append(rows);
+        } else {
+            console.log("wchodze na sucho, ale xle");
+            movieTitles.toggleClass("ascending descending");
+            $(".fa-caret-up").toggle();
+            $(".fa-caret-down").toggle();
+            movieListing.append(rows.reverse());
+        }
+    };
+
+    //public API
+    return {
+        sortMovies: sortMovies
+    };
 }());
 
 /*Module for loading movies*/
@@ -115,7 +172,9 @@ MOVIE_RATING_APP.loadMovies = (function() {
     //declaring dependecies
     var config = MOVIE_RATING_APP.config,
         insertContent = MOVIE_RATING_APP.insertContent,
-        util = MOVIE_RATING_APP.utilities;
+        util = MOVIE_RATING_APP.utilities,
+        handlers = MOVIE_RATING_APP.eventHandlers,
+        sorting = MOVIE_RATING_APP.sorting;
 
     var init = function() {
         util.server(config.AJAX_init)
@@ -123,7 +182,10 @@ MOVIE_RATING_APP.loadMovies = (function() {
             .done(function callback(data, textStatus, jqXHR) {
                 insertContent.showMovies(data);
             })
-            .done(function() {console.log("cos tam dalej");})
+            .done(function callback() {
+                console.log("ładowanko zakonczone");
+                handlers.handleSort(sorting.sortMovies)
+            })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("Add UI - fail");
                 console.log(errorThrown);
@@ -135,16 +197,20 @@ MOVIE_RATING_APP.loadMovies = (function() {
     return init;
 }());
 
+//Probably need to be removed!!!!!!!
+
 MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.initialization");
 
 MOVIE_RATING_APP.initialization = (function() {
     //declaring dependecies
-    var init
+    var init;
 }());
 
 $(document).ready(MOVIE_RATING_APP.loadMovies);
 
-/*$(document).ready(function () {
+//!!! BREAK HERE !!!
+/*
+$(document).ready(function () {
 
 
     function insertContent(movies) {
