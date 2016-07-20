@@ -49,6 +49,12 @@ MOVIE_RATING_APP.config = {
         url: "https://movie-ranking.herokuapp.com/movies",
         timeout: 4000
     },
+    AJAX_fetch_ratings: {
+        type: "GET",
+        dataType: "json",
+        url: "https://movie-ranking.herokuapp.com/movies",
+        timeout: 4000
+    },
 
     //Handlebars templates
     HANDLEBARS_LISTING: function(context) {
@@ -128,32 +134,53 @@ MOVIE_RATING_APP.sorting = (function() {
     //declaring dependecies
     var config = MOVIE_RATING_APP.config;
 
-    var sortMovies = function() {
+    var rowSorting = function() {
+        var rows = $(config.DOM_movie_items).toArray();
 
+        rows.sort(function (a, b) {
+            // select text nodes for each movie
+            a = $(a).find("h3").text();
+            b = $(b).find("h3").text();
+            //perform sort based on text nodes
+            if (a < b) {
+                return -1;
+            } else {
+                return a > b ? 1 : 0;
+            }
+        });
+        
+        return rows;
+    };
+
+    var firstSort = function() {
+        var movieListing = $(config.DOM_listing),
+            movieTitles = $(config.DOM_movie_titles);
+
+        movieTitles.addClass("ascending");
+        $(".fa-caret-up").show();
+
+        movieListing.append(rowSorting());
+    };
+
+    var furtherSorts = function() {
         var movieListing = $(config.DOM_listing),
             movieTitles = $(config.DOM_movie_titles),
             rows = $(config.DOM_movie_items).toArray();
 
-        if (!(movieTitles.hasClass("ascending") || movieTitles.hasClass("descending"))) {
-            movieTitles.addClass("ascending");
-            $(".fa-caret-up").show();
-            rows.sort(function (a, b) {
-                a = $(a).find("h3").text();
-                b = $(b).find("h3").text();
+        movieTitles.toggleClass("ascending descending");
+        $(".fa-caret-up").toggle();
+        $(".fa-caret-down").toggle();
+        movieListing.append(rows.reverse());
+    };
 
-                if (a < b) {
-                    return -1;
-                } else {
-                    return a > b ? 1 : 0;
-                }
-            });
-            movieListing.append(rows);
+    var sortMovies = function() {
+
+        var movieTitles = $(config.DOM_movie_titles);
+
+        if (!(movieTitles.hasClass("ascending") || movieTitles.hasClass("descending"))) {
+            firstSort();
         } else {
-            console.log("wchodze na sucho, ale xle");
-            movieTitles.toggleClass("ascending descending");
-            $(".fa-caret-up").toggle();
-            $(".fa-caret-down").toggle();
-            movieListing.append(rows.reverse());
+            furtherSorts();
         }
     };
 
@@ -161,6 +188,15 @@ MOVIE_RATING_APP.sorting = (function() {
     return {
         sortMovies: sortMovies
     };
+}());
+
+/*Module for fetching movie ratings*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.fetchRatings");
+
+MOVIE_RATING_APP.fetchRatings = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config;
 }());
 
 /*Module for loading movies*/
@@ -183,8 +219,10 @@ MOVIE_RATING_APP.loadMovies = (function() {
                 insertContent.showMovies(data);
             })
             .done(function callback() {
-                console.log("ładowanko zakonczone");
                 handlers.handleSort(sorting.sortMovies)
+            })
+            .done(function callback() {
+
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("Add UI - fail");
