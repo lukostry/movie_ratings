@@ -31,7 +31,7 @@ MOVIE_RATING_APP.namespace = function(nsString) {
 MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.config");
 
 MOVIE_RATING_APP.config = {
-    URL_BASE: "https://movie-ranking.herokuapp.com/movies",
+    URL_BASE: "https://movie-ranking.herokuapp.com/movies/",
 
     MSG_LOADING: "",
 
@@ -53,7 +53,8 @@ MOVIE_RATING_APP.config = {
         type: "GET",
         dataType: "json",
         url: "https://movie-ranking.herokuapp.com/movies",
-        timeout: 4000
+        timeout: 2000,
+        urlExtender: "/ratings"
     },
 
     //Handlebars templates
@@ -61,26 +62,6 @@ MOVIE_RATING_APP.config = {
         return Handlebars.templates.listing(context);
     }
 };
-
-/*Module for inserting content*/
-
-MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.eventHandlers");
-
-MOVIE_RATING_APP.eventHandlers = (function() {
-    //declaring dependecies
-    var config = MOVIE_RATING_APP.config;
-
-    var handleSort = function(sortFunc) {
-        var movieTitles = $(config.DOM_movie_titles);
-
-        movieTitles.on("click", sortFunc);
-    };
-
-    //public API
-    return {
-        handleSort: handleSort
-    };
-}());
 
 /* Utility module which contains feature to handle Ajax requests*/
 
@@ -148,7 +129,7 @@ MOVIE_RATING_APP.sorting = (function() {
                 return a > b ? 1 : 0;
             }
         });
-        
+
         return rows;
     };
 
@@ -174,7 +155,6 @@ MOVIE_RATING_APP.sorting = (function() {
     };
 
     var sortMovies = function() {
-
         var movieTitles = $(config.DOM_movie_titles);
 
         if (!(movieTitles.hasClass("ascending") || movieTitles.hasClass("descending"))) {
@@ -190,13 +170,127 @@ MOVIE_RATING_APP.sorting = (function() {
     };
 }());
 
+/*Module for calculating movie ratings*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.calcRatings");
+
+MOVIE_RATING_APP.calcRatings = (function () {
+    //declaring dependecies
+
+    var sum = 0,
+        length = 0,
+        distributionArray = [0, 0, 0, 0, 0],
+        paramsToDisplay = {
+            mean: 0,
+            ratingDistPrc: [0, 0, 0, 0, 0]
+        };
+
+    var getParams = function(movie) {
+
+        $.each(movie, function callback(index, element) {
+            sum += element.rating;
+            distributionArray[element.rating - 1] += 1;
+        });
+
+        length = movie.length;
+    };
+
+    var calcParamsToDisplay = function(movie) {
+        getParams(movie);
+
+        paramsToDisplay.mean = sum/length;
+        $.each(distributionArray, function callback(index, element) {
+            paramsToDisplay.ratingDistPrc[index] = (Math.round((element / length)*100)) + "%";
+        });
+
+        return paramsToDisplay;
+    };
+
+    //public API
+    return {
+        calcParamsToDisplay: calcParamsToDisplay
+    };
+}());
+
 /*Module for fetching movie ratings*/
 
-MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.fetchRatings");
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.handleAjaxRequests");
 
-MOVIE_RATING_APP.fetchRatings = (function() {
+MOVIE_RATING_APP.handleAjaxRequests = (function() {
     //declaring dependecies
-    var config = MOVIE_RATING_APP.config;
+    var config = MOVIE_RATING_APP.config,
+        util = MOVIE_RATING_APP.utilities;
+
+    var configureURL = function(id) {
+        config.AJAX_fetch_ratings.url = config.URL_BASE;
+        config.AJAX_fetch_ratings.url += id + config.AJAX_fetch_ratings.urlExtender;
+    };
+
+    var fetchRatings = function(id) {
+        //trigger the function which will create valid url for a clicked movie
+        configureURL(id);
+        util.server(config.AJAX_fetch_ratings)
+            .done(function callback() {
+                //call a function which will show the fetched rankings
+            });
+    };
+
+    //public API
+    return {
+        fetchRatings: fetchRatings
+    };
+}());
+
+/*Module for event handlers*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.eventHandlers");
+
+MOVIE_RATING_APP.eventHandlers = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config,
+        handleAjax = MOVIE_RATING_APP.handleAjaxRequests;
+
+    var handleClickOnMovie = function(event) {
+        var id = $(this).data("id");
+
+        event.stopImmediatePropagation();
+
+        handleAjax.fetchRatings(id);
+    };
+
+    //public API
+    return {
+        handleClickOnMovie: handleClickOnMovie
+    };
+}());
+
+/*Module for setting up event listeners*/
+
+MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.setUpListeners");
+
+MOVIE_RATING_APP.setUpListeners = (function() {
+    //declaring dependecies
+    var config = MOVIE_RATING_APP.config,
+        eventHandlers = MOVIE_RATING_APP.eventHandlers,
+        sorting = MOVIE_RATING_APP.sorting;
+
+    var clickToSort = function() {
+        var movieTitles = $(config.DOM_movie_titles);
+
+        movieTitles.on("click", sorting.sortMovies);
+    };
+
+    var clickOnMovie = function() {
+        var allMovies = $(config.DOM_movie_items);
+
+        allMovies.on("click", eventHandlers.handleClickOnMovie);
+    };
+
+    //publi API
+    return {
+        clickOnMovie: clickOnMovie,
+        clickToSort: clickToSort
+    };
 }());
 
 /*Module for loading movies*/
@@ -210,6 +304,7 @@ MOVIE_RATING_APP.loadMovies = (function() {
         insertContent = MOVIE_RATING_APP.insertContent,
         util = MOVIE_RATING_APP.utilities,
         handlers = MOVIE_RATING_APP.eventHandlers,
+        listeners = MOVIE_RATING_APP.setUpListeners,
         sorting = MOVIE_RATING_APP.sorting;
 
     var init = function() {
@@ -219,10 +314,10 @@ MOVIE_RATING_APP.loadMovies = (function() {
                 insertContent.showMovies(data);
             })
             .done(function callback() {
-                handlers.handleSort(sorting.sortMovies)
+                listeners.clickToSort();
             })
             .done(function callback() {
-
+                listeners.clickOnMovie();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("Add UI - fail");
@@ -244,7 +339,9 @@ MOVIE_RATING_APP.initialization = (function() {
     var init;
 }());
 
-$(document).ready(MOVIE_RATING_APP.loadMovies);
+$(document).ready(function () {
+    MOVIE_RATING_APP.loadMovies();
+});
 
 //!!! BREAK HERE !!!
 /*
