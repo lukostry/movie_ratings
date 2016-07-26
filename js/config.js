@@ -15,7 +15,8 @@ MOVIE_RATING_APP.config = {
     DOM_app: ".movie_rating_app",
     DOM_movie_titles: ".titles",
     DOM_movie_items: ".movie",
-    DOM_star_buttons: ".buttons_container",
+    DOM_star_buttons_container: ".buttons_container",
+    DOM_star_buttons: ".button_to_rate",
     DOM_avg: ".avg_number",
     DOM_rating_panel_wrapper: ".rating_panel_wrapper",
     DOM_progress_bar: ".progress_bell",
@@ -35,6 +36,12 @@ MOVIE_RATING_APP.config = {
         timeout: 2000,
         urlExtender: "/ratings"
     },
+    AJAX_rate_movie: {
+        type: "POST",
+        dataType: "json",
+        url: "https://movie-ranking.herokuapp.com/movies",
+        timeout: 2000
+    },
 
     //Handlebars templates
     HANDLEBARS_LISTING: function(context) {
@@ -46,11 +53,18 @@ MOVIE_RATING_APP.config = {
     HANDLEBARS_table: function(context) {
         return Handlebars.templates.ratingTable(context);
     },
+    HANDLEBARS_success: function(context) {
+        return Handlebars.templates.success(context);
+    },
     //Handlebars context objects
     CONTEXT_stars_count: {
         stars: [1, 2, 3, 4, 5]
     },
     CONTEXT_stars: {
         stars: ["1 star", "2 star", "3 star", "4 star", "5 star"]
+    },
+    CONTEXT_success: {
+        class: "success",
+        icon: "fa fa-check-circle-o"
     }
 };

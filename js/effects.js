@@ -21,10 +21,17 @@ MOVIE_RATING_APP.effects = (function() {
         }, 1000);
     };
 
+    var fadeAndRemove = function(el) {
+        $(el).fadeIn(700).delay(1700).fadeOut(600, function() {
+            $(el).remove();
+        });
+    };
+
     //public API
     return {
         addHoverClass: addHoverClass,
         removeHoverClass: removeHoverClass,
-        animateProgressBar: animateProgressBar
+        animateProgressBar: animateProgressBar,
+        fadeAndRemove: fadeAndRemove
     };
 }());

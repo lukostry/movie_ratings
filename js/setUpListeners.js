@@ -28,7 +28,7 @@ MOVIE_RATING_APP.setUpListeners = (function() {
     };
 
     var mouseOnStars = function(callback1, callback2) {
-        var starIcons = $(config.DOM_star_buttons);
+        var starIcons = $(config.DOM_star_buttons_container);
 
         starIcons.on("mouseenter", "button", function(event) {
             // effects.addHoverClass($(this));
@@ -42,10 +42,22 @@ MOVIE_RATING_APP.setUpListeners = (function() {
         });
     };
 
-    //publi API
+    var clickOnRatingButton = function(parentEl, callback) {
+        var buttonsToRate = $(parentEl).find(config.DOM_star_buttons);
+
+        buttonsToRate.on("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            callback(this);
+        });
+    };
+
+    //public API
     return {
         clickOnMovie: clickOnMovie,
         clickToSort: clickToSort,
-        mouseOnStars: mouseOnStars
+        mouseOnStars: mouseOnStars,
+        clickOnRatingButton: clickOnRatingButton
     };
 }());

@@ -7,7 +7,8 @@ MOVIE_RATING_APP.insertContent = (function() {
     var config = MOVIE_RATING_APP.config,
         effects = MOVIE_RATING_APP.effects,
         calc = MOVIE_RATING_APP.calcRatings,
-        listeners = MOVIE_RATING_APP.setUpListeners;
+        listeners = MOVIE_RATING_APP.setUpListeners,
+        rating = MOVIE_RATING_APP.rateMovies;
 
     var listing = $(config.DOM_listing),
         distributionWrapper = config.DOM_distribution_wrapper,
@@ -55,11 +56,13 @@ MOVIE_RATING_APP.insertContent = (function() {
     };
 
     var firstFetching = function(currentEl) {
-        //
+        //first the data will be fetched, the whole rating panel for each movie need to be creared
         currentEl.attr("data-fetched", true);
         createRatingPanel(currentEl);
         listeners.mouseOnStars(effects.addHoverClass, effects.removeHoverClass);
+        listeners.clickOnRatingButton(currentEl, rating.rateMovie);
         createDistributionTable(currentEl);
+        //shared methods
         displayRatingPanel(currentEl, calc.getMean());
         displayDistribution(currentEl, calc.getDistArray());
     };

@@ -27,8 +27,7 @@ MOVIE_RATING_APP.handleAjaxRequests = (function() {
                 } else {
                     insert.furtherFetchings(currentEl);
                 }
-                //call a function which will show the fetched rankings
-            })
+            }) //ponizsze do usunięcia najprawdopodobniej!!!!!!!
             .done(function callback() {
                 // listeners.mouseOnStars();
             });
