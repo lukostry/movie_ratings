@@ -5,7 +5,7 @@ MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.utilities");
 MOVIE_RATING_APP.utilities = (function() {
     //declaring dependecies
     var config = MOVIE_RATING_APP.config;
-
+    //the function needs to be invoked with a configuration object
     var server = function(conf) {
         return $.ajax({
             type: conf.type,

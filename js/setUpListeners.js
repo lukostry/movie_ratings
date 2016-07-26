@@ -1,4 +1,4 @@
-/*Module for setting up event listeners*/
+/*Module for setting up generic event listeners*/
 
 MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.setUpListeners");
 

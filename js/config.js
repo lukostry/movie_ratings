@@ -1,12 +1,12 @@
 
-/*Config module*/
+/*Config module -- I've picked the data which I believe needs to be externalized */
 
 MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.config");
 
 MOVIE_RATING_APP.config = {
     URL_BASE: "https://movie-ranking.herokuapp.com/movies/",
 
-    MSG_LOADING: "",
+    MSG_LOADING: "", //msg to be displayed during initial Ajax request
 
     //selected DOM nodes
     DOM_listing: ".movie_listing",
@@ -56,12 +56,19 @@ MOVIE_RATING_APP.config = {
     HANDLEBARS_success: function(context) {
         return Handlebars.templates.success(context);
     },
+    HANDLEBARS_error: function(context) {
+        return Handlebars.templates.error(context);
+    },
     //Handlebars context objects
     CONTEXT_stars_count: {
         stars: [1, 2, 3, 4, 5]
     },
     CONTEXT_stars: {
         stars: ["1 star", "2 star", "3 star", "4 star", "5 star"]
+    },
+    CONTEXT_error: {
+        class: "error",
+        icon: "fa fa-times-circle-o"
     },
     CONTEXT_success: {
         class: "success",

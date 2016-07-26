@@ -9,7 +9,7 @@ MOVIE_RATING_APP.insertContent = (function() {
         calc = MOVIE_RATING_APP.calcRatings,
         listeners = MOVIE_RATING_APP.setUpListeners,
         rating = MOVIE_RATING_APP.rateMovies;
-
+    //`private variables`
     var listing = $(config.DOM_listing),
         distributionWrapper = config.DOM_distribution_wrapper,
         averagePlaceholder = config.DOM_avg,

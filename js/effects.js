@@ -3,7 +3,6 @@
 MOVIE_RATING_APP.namespace("MOVIE_RATING_APP.effects");
 
 MOVIE_RATING_APP.effects = (function() {
-    //declaring dependecies
 
     var addHoverClass = function(el) {
         $(el).find("i").addClass("hovered");

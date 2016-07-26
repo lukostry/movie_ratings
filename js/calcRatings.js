@@ -6,7 +6,7 @@ MOVIE_RATING_APP.calcRatings = (function() {
     var sum = 0,
         length = 0,
         distributionArray = [0, 0, 0, 0, 0],
-        //the parameters that would be displayed in the app
+        //the parameters that would be displayed in the app:
         paramsToDisplay = {
             mean: 0,
             ratingDistPrc: [0, 0, 0, 0, 0]
@@ -42,7 +42,6 @@ MOVIE_RATING_APP.calcRatings = (function() {
     };
 
    var getDistArray = function() {
-    //    console.log(paramsToDisplay.ratingDistPrc);
        return paramsToDisplay.ratingDistPrc;
    };
 
