@@ -25,15 +25,15 @@ this["Handlebars"]["templates"]["listing"] = Handlebars.template({"1":function(c
   return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
 this["Handlebars"]["templates"]["ratingPanel"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    return "        <button class=\"button_to_rate\" data-rating=\""
+    return "<button class=\"button_to_rate\" data-rating=\""
     + container.escapeExpression(container.lambda(depth0, depth0))
-    + "\"><i class=\"fa fa-star\" aria-hidden=\"true\"></i></button>\r\n";
+    + "\"><i class=\"fa fa-star\" aria-hidden=\"true\"></i></button>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"rating_panel_wrapper\">\r\n    <div class=\"distribution\"></div>\r\n    <div class=\"buttons_container\">\r\n        <h4>You can rate this movie (1-5 stars)!</h4>\r\n"
+  return "<div class=\"rating_panel_wrapper\">\r\n    <div class=\"distribution\"></div>\r\n    <div class=\"buttons_container\">\r\n        <h4>You can rate this movie (1-5 stars)!</h4>\r\n        "
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.stars : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    </div>\r\n    <div class=\"average\">Average user's rating: <span class=\"avg_number\"></span></div>    \r\n</div>\r\n";
+    + "\r\n    </div>\r\n    <div class=\"average\">Average user's rating: <span class=\"avg_number\"></span></div>\r\n</div>\r\n";
 },"useData":true});
 this["Handlebars"]["templates"]["ratingTable"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     return "        <tr class=\"rating_row\">\r\n            <td class=\"star_counter\">"
