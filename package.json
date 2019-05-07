@@ -1,6 +1,6 @@
 {
   "name": "movie_ratings",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple web app built with an use of Ajax technology",
   "main": "gulpfile.js",
   "dependencies": {
